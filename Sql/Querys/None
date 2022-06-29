@@ -1,1 +1,30 @@
 
+Marco
+1)SELECT NEstado 
+  FROM Estado E 
+  JOIN DeliveryEstado DE 
+  ON ED.CEstado = E.CEstado 
+  GROUP BY CEstado
+
+2)SELECT NPlatillo, Npaso, MAX(Qduracion) 
+  FROM Platillo PL 
+  JOIN Paso P 
+  ON PL.CPlatillo=P.CPlatillo 
+  GROUP BY CPlatillo 
+  ORDER BY 1
+
+3)SELECT Usuario.Nnombre, Usuario.Napellido, Delivery.CRuta
+  FROM Usuario U
+  JOIN Pedido P ON U.CUsuario=P.CEmpleado 
+  JOIN Delivery D ON P.CPedido=D.CPedido 
+  GROUP BY CUsuario
+
+4)SELECT Nnombre,Napellido 
+  FROM Usuario 
+  WHERE Nnombre NOT IN 
+  (SELECT DISTINCT Nnombre
+   FROM Usuario U
+   JOIN Contrato C
+   ON U.CUsuario=C.CEmpleado
+   WHERE Msueldo>1500
+   ORDER BY 1)
