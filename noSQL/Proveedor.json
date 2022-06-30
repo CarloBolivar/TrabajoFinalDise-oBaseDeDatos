@@ -1,0 +1,46 @@
+[{
+  "_id": {
+    "$oid": "62bd2c51532eaf036b0304f9"
+  },
+  "nombre_proveedor": "Carlos",
+  "telefono": {
+    "$numberLong": "24380451327"
+  },
+  "correo": "Pan Perú"
+},{
+  "_id": {
+    "$oid": "62bd2c99532eaf036b0304fb"
+  },
+  "nombre_proveedor": "Juan",
+  "telefono": {
+    "$numberLong": "41578242327"
+  },
+  "correo": "Gloria"
+},{
+  "_id": {
+    "$oid": "62bd2cb6532eaf036b0304fd"
+  },
+  "nombre_proveedor": "Pedro",
+  "telefono": {
+    "$numberLong": "43771657589"
+  },
+  "correo": "San Fernando"
+},{
+  "_id": {
+    "$oid": "62bd2cdb532eaf036b0304ff"
+  },
+  "nombre_proveedor": "Rosa",
+  "telefono": {
+    "$numberLong": "36401881279"
+  },
+  "correo": "Proagroperuanos"
+},{
+  "_id": {
+    "$oid": "62bd2d0e532eaf036b030501"
+  },
+  "nombre_proveedor": "Tomás",
+  "telefono": {
+    "$numberLong": "43677779785"
+  },
+  "correo": "Emsal"
+}]

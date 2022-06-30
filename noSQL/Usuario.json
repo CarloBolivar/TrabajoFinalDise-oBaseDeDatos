@@ -1,0 +1,51 @@
+[{
+  "_id": {
+    "$oid": "62bd2669532eaf036b0304eb"
+  },
+  "nombre_usuario": "Adriana",
+  "apellido_usuario": "Fernandez",
+  "telefono": 956328152,
+  "correo": "AdrianaFernandez@gmail.com",
+  "dirrecion": "Jr. Fray Luis de leon 314",
+  "distrito": "'San Borja"
+},{
+  "_id": {
+    "$oid": "62bd26b1532eaf036b0304ed"
+  },
+  "nombre_usuario": "Julio",
+  "apellido_usuario": "Asto",
+  "telefono": 990504632,
+  "correo": "JulioAsto@gmail.com",
+  "dirrecion": "Salsillo 175",
+  "distrito": "Surco"
+},{
+  "_id": {
+    "$oid": "62bd272a532eaf036b0304f0"
+  },
+  "nombre_usuario": "Aquiles",
+  "apellido_usuario": "Hunter",
+  "telefono": 994201755,
+  "correo": "AquilesHunter@gmail.com",
+  "dirrecion": "Lopez de Ayala 1451",
+  "distrito": "Surco"
+},{
+  "_id": {
+    "$oid": "62bd28f2532eaf036b0304f2"
+  },
+  "nombre_usuario": "Victor",
+  "apellido_usuario": "Hernan",
+  "telefono": 956328152,
+  "correo": "VictorHernan@gmail.com",
+  "dirrecion": "Bartolome Bernejo 160",
+  "distrito": "'Surco"
+},{
+  "_id": {
+    "$oid": "62bd294f532eaf036b0304f5"
+  },
+  "nombre_usuario": "Alex",
+  "apellido_usuario": "Rodriguez",
+  "telefono": 994209761,
+  "correo": "AlexRodrigez@gmail.com",
+  "dirrecion": "Jirón Miguel Zamora 120",
+  "distrito": "'San Borja"
+}]

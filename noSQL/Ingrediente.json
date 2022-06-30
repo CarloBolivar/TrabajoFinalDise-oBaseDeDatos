@@ -1,0 +1,36 @@
+[{
+  "_id": {
+    "$oid": "62bd3129532eaf036b030521"
+  },
+  "nombre_Ingrediente": "Pan",
+  "descripcion": "Alimento básico que se elabora con una mezcla de harina, generalmente de trigo, agua, sal y levadura, que se amasa y se cuece en un horno en piezas de distintas formas y tamaños; su sabor, color y textura pueden variar según el tipo de harina empleado y los ingredientes secundarios añadidos, como leche, mantequilla, frutos secos, etc.",
+  "cantidad": 96
+},{
+  "_id": {
+    "$oid": "62bd314c532eaf036b030523"
+  },
+  "nombre_Ingrediente": "Tocino",
+  "descripcion": "El tocino es un tipo de carne curada que tradicionalmente viene de la parte posterior del vientre, o de los lados de un cerdo, por lo general contiene poca carne y más acumulo graso que se deposita en la porción subcutánea de la piel del cerdo.",
+  "cantidad": 112
+},{
+  "_id": {
+    "$oid": "62bd3194532eaf036b030526"
+  },
+  "nombre_Ingrediente": "Tomate",
+  "descripcion": "Fruto de esta planta, comestible, de piel roja, verde o amarilla, lisa y brillante, pulpa muy jugosa y semillas amarillas y planas.",
+  "cantidad": 119
+},{
+  "_id": {
+    "$oid": "62bd31ce532eaf036b030528"
+  },
+  "nombre_Ingrediente": "Azucar",
+  "descripcion": "Sustancia cristalina, generalmente blanca, muy soluble en agua y de sabor muy dulce, que se encuentra en el jugo de muchas plantas y se extrae especialmente de la caña dulce y de la remolacha; se emplea en alimentación como edulcorante nutritivo y generalmente se presenta en polvo de cristales pequeño",
+  "cantidad": 67
+},{
+  "_id": {
+    "$oid": "62bd31f0532eaf036b03052a"
+  },
+  "nombre_Ingrediente": "Huevo",
+  "descripcion": "Cuerpo redondo u ovalado, con una membrana o cáscara exterior, que ponen las hembras de algunos animales y que contiene en su interior el embrión de un nuevo ser y el alimento necesario para que crezca",
+  "cantidad": 97
+}]

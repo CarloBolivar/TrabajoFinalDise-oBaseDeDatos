@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "62bd2e5c532eaf036b030511"
+  },
+  "descuento": 11,
+  "cantidaddeplatillos": 2
+},{
+  "_id": {
+    "$oid": "62bd2e65532eaf036b030513"
+  },
+  "descuento": 5,
+  "cantidaddeplatillos": 4
+},{
+  "_id": {
+    "$oid": "62bd2e6b532eaf036b030515"
+  },
+  "descuento": 11,
+  "cantidaddeplatillos": 1
+},{
+  "_id": {
+    "$oid": "62bd2e76532eaf036b030517"
+  },
+  "descuento": 3,
+  "cantidaddeplatillos": 2
+},{
+  "_id": {
+    "$oid": "62bd2e81532eaf036b030519"
+  },
+  "descuento": 50,
+  "cantidaddeplatillos": 5
+}]

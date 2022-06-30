@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "62bd3419532eaf036b03053a"
+  },
+  "nombre_platillo": "COMIXS CLUB SANDWICH",
+  "costo": 52
+},{
+  "_id": {
+    "$oid": "62bd342b532eaf036b03053c"
+  },
+  "nombre_platillo": "QUADRAPPETIZER PLATTER",
+  "costo": 48
+},{
+  "_id": {
+    "$oid": "62bd3443532eaf036b03053e"
+  },
+  "nombre_platillo": "INTERSTELLAR",
+  "costo": 6
+},{
+  "_id": {
+    "$oid": "62bd3454532eaf036b030540"
+  },
+  "nombre_platillo": "CHICHA",
+  "costo": 16
+},{
+  "_id": {
+    "$oid": "62bd3465532eaf036b030542"
+  },
+  "nombre_platillo": "MILKSHAKE PREMIUM",
+  "costo": 12
+}]
