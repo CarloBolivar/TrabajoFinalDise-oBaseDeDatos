@@ -1,14 +1,26 @@
+El negocio desea realizar una recopilación de información para saber qué tipos de platillos (desayuno-almuerzo) 
+son los que se venden más día a día, por lo que se guiará de la hora del pedido a la hora de determinar su tipo. 
+
 1) SELECT HDeinicio FROM DeliveryEstado
 WHERE DATEPART(HOUR, HDeinicio) BETWEEN 12 and 7
 ORDER BY HDeinicio  ASC;
+
+Killimanjaro desea saber qué trabajadores del horario número 1 recibirán un pago adicional para segmentarlos y así administrar mucho más 
+fácil su paga según contrato por lo que verificará si la columna MPagoHoraExtra tiene un 100 o un 200 
 
 2) SELECT MPagoHoraExtra FROM Contrato
 WHERE (Chorario = CH01 AND MPagoHoraExtra BETWEEN 100 AND 200)
 ORDER BY MPagoHoraExtra ASC;
 
+Killimanjaro desea saber cuáles son los sitios donde deben entregar los pedidos detalle para así conocer quiénes están más 
+alejados y quiénes más cerca a fin de administrar correctamente los tiempos de delivery.
+
 3) SELECT NroLatitudFin FROM Ruta
 WHERE ( NroLatitudFin AND NroLongitudFin > NroLatitudInicio AND NroLongitudInicio)
 ORDER BY NroLatitudFin AND NroLongitudFin ASC;
+
+Se desea conocer qué contraseñas de los clientes pueden ser vulnerables o descubiertas fácilmente, por lo que se 
+evaluará y seleccionará si la contraseña tiene más de 9 dígitos 
 
 4) SELECT Cpassword FROM Cliente
 WHERE CHARACTER_LENGTH(CPassword)>=9
