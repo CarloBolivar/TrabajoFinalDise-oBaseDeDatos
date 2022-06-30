@@ -1,0 +1,207 @@
+/*	Se desea mejorar la calidad de empleados. Para ello se solicita conocer
+	que empleados realizaron menos órdenes durante un rango de fecha determinado
+	y cuyo contrato está por acabar en x meses. Mostrar a todos los empleados y, además,
+	agregar un indicador que afirme si podrá renovar contrato o no.*/ 
+
+--Hallar cantidad de ordens por empleado
+create function fn_Qordernes(@date1 date, @date2 date) returns table 
+as 
+return 
+(
+	select c.Ccontrato, e.Cempleado, count(p.Cpedido) 'Qpedido'
+	from Pedido p join delivery  d on p.Cpedido = d.Cpedido
+				  join Empleado e on d.Cempleado = e.Cempleado
+				  join Contrato c on e.Cempleado = c.Cempleado
+	where p.Dpedido between @date1 and @date2 
+	group by c.Ccontrato, e.Cempleado
+)
+
+--empleados que hicieron mas que el promedio de las ordenes 
+create function fn_Qordernes(@date1 date, @date2 date) returns table 
+as 
+return 
+(
+	select *
+	from fn_Qordernes(@date1,@date2) fnqo
+	where fnqo.Qpedido = (select MIN(fnqo.Qpedido)
+						  from fn_Qordernes(@date1,@date2) fnqo)
+)
+
+--Hallar la cantidad de meses para que termine el contrato de un empleado.
+create function fn_Qcant(@Cant int) returns table 
+as 
+return 
+(
+	select c.Ccontrato, DATEDIFF(MM, c.Dinicio, c.Dfin) 'Qmeses'
+	from Empleado e join Contrato c on e.Cempleado = c.Cempleado
+	where  DATEDIFF(MM, c.Dinicio, c.Dfin) < @Cant
+)
+
+--join con las 2 funciones para hallar la calidad de empleado
+create function fn_CalidadEmp(@date1 date, @date2 date, @Cant int ) returns table 
+as 
+return 
+(	
+	select fnQo.Ccontrato, fnQo.Cempleado, fnQo.Qpedido, fnqa.Qmeses
+	from fn_Qordernes(@date1,@date2) fnQo join fn_Qcant(@Cant) fnqa on fnQo.Ccontrato = fnqa.Ccontrato
+)
+
+create function fn_CalidadEmpfin(@date1 date, @date2 date, @Cant int ) returns table 
+as 
+return 
+(
+	select e.Cempleado, u.Napellido, u.Nnombre, (case when (fncal.Cempleado = e.Cempleado) then 'Renovar' else 'No renovar' end) as estado
+	from fn_CalidadEmp(@date1,@date2,@Cant) fncal right join Empleado e on fncal.Cempleado = e.Cempleado 
+																join Usuario u  on e.Cempleado = u.Cusuario
+)
+
+select *
+from dbo.fn_CalidadEmpfin('2020-01-01','2022-01-01',41 )
+
+/*	Klimanjaro está perdiendo empleados por lo que reducirá platillos. Para ello, desea saber
+	cuales son los platillos que fueron cancelados en un año determinado. Además que el monto
+	generado de ese platillo en ese año sea menor que el promedio del monto de venta. Mostrar el
+	codigo del platillo, nombre del platillo y el monto.*/
+
+--Pedidos cancelados por año.
+
+create function fn_EstadoD(@Eyear int) returns table 
+as 
+return 
+(
+	select pp.Cplatillo
+	from Estado  e join DeliveryEstado  de on e.Cestado = de.Cestado
+					join Delivery d on de.Cdelivery = d.Cdelivery
+					join Pedido p on d.Cpedido = p.Cpedido
+					join PlatillosdelPedido pp on p.Cpedido = pp.Cpedido
+	where e.Cestado = 'CE05' and YEAR(p.Dpedido) = @Eyear
+)
+
+--monto generado por año de un platilllo
+create function fn_amount(@dyear int) 
+returns table 
+as 
+return
+(
+	select pl.Cplatillo, pl.Mplatillo, SUM(pp.Qplatillo*pl.Mplatillo*(1-pp.descuentoplatillo)) 'Amount'
+	from  Pedido p join PlatillosdelPedido pp on p.Cpedido = pp.Cpedido
+					   join Platillo pl on pp.Cplatillo = pl.Cplatillo
+	where YEAR(p.Dpedido) = @dyear
+	group by  pl.Cplatillo, pl.Mplatillo
+)
+--Monto de los paltillos que no superan el promedio 
+
+create function fn_amountmin(@dyear int) 
+returns table 
+as 
+return
+(
+	select *
+	from fn_amount(@dyear) fna 
+	where fna.Amount <= all (select avg(fna1.Amount)
+							 from  fn_amount(@dyear) fna1)
+)
+
+--Minimo de un monto por platillo con los platillos que fueron cancelados.
+
+create function fn_amountminFin(@Eyear int) 
+returns table 
+as 
+return
+(
+	select  fn_am.Cplatillo, fn_am.Mplatillo, fn_am.Amount 
+	from fn_amountmin(@Eyear) fn_am join  fn_EstadoD(@Eyear)  fn_Es on fn_am.Cplatillo = fn_Es.Cplatillo
+)
+
+
+--test
+select *
+from  fn_amountminFin(2022) 
+
+/*	Kilimanjaro premiara por MES a los clientes cuyos montos en pedidos son mayores a un monto determinado (dinero).
+	Para ello se desea crear un trigger que guarde en una tabla ClientesPremiados (Ccliente, Fecha,
+	Nnombre y monto)*/
+
+
+create view vw_mdinero as 
+select c.Ccliente, u.Nnombre, p.Dpedido, SUM(pp.Qplatillo*pl.Mplatillo*(1-pp.descuentoplatillo)) 'Amount'
+	from   Usuario u join  Cliente c on u.Cusuario = c.Ccliente
+					join Pedido p on c.Ccliente = p.Ccliente
+					 join PlatillosdelPedido pp on p.Cpedido = pp.Cpedido
+					   join Platillo pl on pp.Cplatillo = pl.Cplatillo
+where YEAR(p.Dpedido) = 2022
+group by c.Ccliente, u.Nnombre, p.Dpedido
+having SUM(pp.Qplatillo*pl.Mplatillo*(1-pp.descuentoplatillo)) > 100.0
+
+create table ClientesPremiados
+(
+	Ccliente char(4),
+	Nnombre varchar(30),
+	Fecha date,
+	monto float,
+	constraint PK_ClientesPremiados PRIMARY KEY (Ccliente,Fecha),
+)
+
+create trigger tr_clipremi 
+on PlatillosdelPedido
+for insert 
+as
+begin
+	insert into ClientesPremiados
+	select *
+	from vw_mdinero vwmd
+	where vwmd.Ccliente not in (select cpr.Ccliente
+						   from ClientesPremiados cpr) and 
+	  vwmd.Dpedido not in (select cpr.Fecha
+						   from ClientesPremiados cpr)
+end
+
+select *
+from ClientesPremiados
+
+
+
+insert into Pedido 
+values('CP43', 'CTP01','CU15',CONVERT(date,GETDATE()),'Surco','21:46:00.0000000')
+
+insert into PlatillosdelPedido
+values('CP43','CL08',0,2)
+
+
+
+
+/*Klimanjaro  quiere conocer cuáles son los ingredientes que debe priorizar en la siguiente compra, para ello quiere 
+conocer cuáles son aquellos que están en al menos x platillos distintos o cuales son los ingredientes en la que la cantidad 
+usada en el platillo es mayor al promedio.*/
+
+create function fn_ingredienteXplatillos(@platillos int)
+returns table
+as
+RETURN(
+	   select ipl.Cingrediente,COUNT(ipl.Cplatillo)'Enplatillos'
+	   from IngredientePlatillo ipl
+	   group by ipl.Cingrediente
+	   having COUNT(ipl.Cplatillo)>=@platillos
+	   )
+
+create function fn_QingredientePromedio()
+returns float
+as
+begin
+	declare @promedioQing float
+
+	select @promedioQing=AVG(ipl.Qingredientesplatillo)
+	from IngredientePlatillo ipl
+	
+	return @promedioQing
+end
+
+select ipl.Cingrediente,ipl.Qingredientesplatillo,COUNT(ipl.Cplatillo)'Enplatillos'
+from IngredientePlatillo ipl
+where ipl.Qingredientesplatillo>dbo.fn_QingredientePromedio()
+group by ipl.Cingrediente,ipl.Qingredientesplatillo
+
+select *
+from fn_ingredienteXplatillos(3)
+
+
