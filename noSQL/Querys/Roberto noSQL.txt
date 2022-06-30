@@ -1,0 +1,14 @@
+1- Buscar ingedientes que su cantidad sea menor a 20
+
+
+db.Ingrediente.find({cantidad: {$lt: 20 }})
+
+
+2- Se Buscan los descuentos realizados 
+
+db.PlatilloDelPedido.find({cantidad: {$gt: 15 }})
+
+
+3- Buscar un Pedido que se entrego a las 13:00 horas
+
+db.Ingrediente.aggregate([{ $match: { distrito: "San Borja" } }])
