@@ -1,0 +1,128 @@
+
+/*1- Se Desea saber cuales son los platos que cuesta menos de 20 soles y 
+que tienen un descuento maximo del 9% para poder agregarlos a la carta de pedidos
+en bajo precio*/
+USE KILIMANJARODB
+SELECT NPlatillo AS Platillo, MPlatillo AS Costo,Descuentoplatillo AS Descuento
+FROM Platillo,PlatillosdelPedido
+WHERE MPlatillo < 20 AND Descuentoplatillo < 9
+ORDER BY MPlatillo
+
+
+/*2-Kilimanjaro desea saber si sus ventas están incrementando 
+de año a año por lo tanto debe crear un procedimiento almacenado 
+que muestre las ventas en monto y en cantidad de un año elegido y 
+las ventas en monto y en cantidad de año anterior al elegido. */
+CREATE PROCEDURE sales_by_year @Year int
+AS
+BEGIN
+	SELECT 
+		YEAR(o.DPedido) 'Anio',
+		SUM(od.QPlatillo*d.MPlatillo*(1-od.DescuentoPlatillo)) 'Monto',
+		COUNT(o.CPedido) 'Cantidad'
+	FROM Pedido o
+	INNER JOIN [PlatillosdelPedido] od ON od.CPedido =  o.CPedido
+	INNER JOIN [Platillo] d ON d.CPlatillo =  od.CPlatillo
+	WHERE YEAR(o.DPedido) = @Year
+	GROUP BY YEAR(o.DPedido)
+
+	UNION ALL
+
+	SELECT 
+		YEAR(o.DPedido) 'Anio',
+		SUM(od.QPlatillo*d.MPlatillo*(1-od.DescuentoPlatillo)) 'Monto',
+		COUNT(o.CPedido) 'Cantidad'
+	FROM Pedido o 
+	INNER JOIN [PlatillosdelPedido] od ON od.CPedido =  o.CPedido
+	INNER JOIN [Platillo] d ON d.CPlatillo =  od.CPlatillo
+	WHERE YEAR(o.DPedido) = @Year-1
+	GROUP BY YEAR(o.DPedido)
+END;
+
+EXEC sales_by_year 2022
+
+/3-Se necesita actualiza el precio de los productos con menos 
+el 10% de su valor por motivos de oferta, de aquellos platillos que se vebdan mas de una vez y que los pedidos partan a Jesus Maria*/
+
+
+USE KILIMANJARODB
+UPDATE Platillo
+SET
+	Platillo.MPlatillo = Platillo.MPlatillo - (10/100*Platillo.MPlatillo)
+SELECT
+	p.*
+FROM Platillo p
+
+INNER JOIN PlatillosdelPedido c ON c.CPlatillo = p.CPlatillo
+
+INNER JOIN Pedido od ON od.CPedido = c.CPedido
+
+WHERE c.QPlatillo > 1 AND oD.CDistrito = 'Jesus Maria'
+
+/*4- Se necesita listar los productos que se quedarían desabastecidos 
+si la venta en unidades se multiplica por 2. Muestre el
+código del producto, su stock actual, la venta en unidades
+actual y la que sería si se multiplica por 2*/
+SELECT
+	p.CCompra,
+	od.NIngredientes,
+	p.QIngredientecompra,
+	SUM(e.QIngredientesplatillo) 'VentaUnidadesActual',
+	SUM(e.QIngredientesplatillo*2) 'VentaUnidadesActual*2'
+FROM DetalleCompra p
+INNER JOIN Ingrediente od ON od.CIngrediente = p.CIngrediente
+INNER JOIN IngredientePlatillo e ON e.CIngrediente = p.CIngrediente
+INNER JOIN Compra o ON o.CCompra = p.CCompra
+GROUP BY p.CCompra, od.NIngredientes, p.QIngredientecompra
+HAVING p.QIngredientecompra < SUM(e.QIngredientesplatillo*2) 
+
+/*5-Se necesita mostrar la lista de proveedores cuyos ingredientes son
+los más vendidos durante el año 2022 y de los proveedores
+cuyos productos han sido menos vendidos ese mismo año. Se debe mostrar
+el proveedor y la cantidad de productos vendidos y una marca que indique
+si es mínimo o máximo*/
+
+CREATE VIEW vw_products_by_suppliers AS
+SELECT
+	s.CProveedor,
+	s.TRazonsocial,
+	SUM(od.QIngredientecompra) 'Quantity'
+FROM Proveedor s
+INNER JOIN ProveedorIngrediente p ON p.CProveedor = s.CProveedor
+INNER JOIN DetalleCompra od ON od.CIngrediente = p.CIngrediente
+INNER JOIN Compra o ON o.CCompra = od.CCompra
+WHERE YEAR(o.DEntrega) = 2022
+GROUP BY s.CProveedor, s.TRazonsocial
+
+SELECT 
+*,
+'MÁXIMO' as 'Tipo'
+FROM vw_products_by_suppliers vw1
+WHERE vw1.Quantity = (SELECT MAX(vw_max.Quantity) 'MaxQuantity' FROM vw_products_by_suppliers vw_max)
+UNION ALL
+SELECT 
+*,
+'MINIMO' as 'Tipo'
+FROM vw_products_by_suppliers vw2
+WHERE vw2.Quantity = (SELECT MIN(vw_min.Quantity) 'MinQuantity' FROM vw_products_by_suppliers vw_min)
+
+
+/*6- Las compras a los proveedores al ser al por mayor cuentan 
+con un 10% de descuento mostrar el proveedor que tuvo la menor 
+venta de productos en un año 2017*/
+
+CREATE VIEW vw_ventas_by_supplier AS
+SELECT
+	s.CProveedor,
+	s.TRazonsocial,
+	SUM(p.MPrecioingrediente*od.QIngredientecompra*(1-(10/100))) as 'Monto'
+FROM Proveedor s 
+INNER JOIN ProveedorIngrediente p ON p.CProveedor = s.CProveedor
+INNER JOIN DetalleCompra od ON od.CIngrediente = p.CIngrediente
+INNER JOIN Compra o ON o.CCompra = od.CCompra
+WHERE YEAR(o.DEntrega) = 2022
+GROUP BY s.CProveedor, s.TRazonsocial
+
+SELECT * FROM vw_ventas_by_supplier vw1
+WHERE vw1.Monto = (SELECT MIN(vw2.Monto) FROM ventas_by_supplier vw2)
+
