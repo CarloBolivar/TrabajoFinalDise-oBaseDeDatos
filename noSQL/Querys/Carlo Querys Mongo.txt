@@ -1,0 +1,14 @@
+
+1- Se desea ver toda las colecciones de Kilimanjaro
+
+use Kilimanjaro;
+show collections;
+
+
+2- Se Busca un Usuario en especifico por su id
+
+db.Usuario.findOne({_id: ObjectId("62bd2669532eaf036b0304eb")})
+
+
+3- Buscar un Pedido que se entrego a las 13:00 horas
+db.Pedido.find({hora: {$gt: 13}})
