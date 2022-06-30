@@ -1,0 +1,11 @@
+Se desea saber cuáles son los trabajadores que se encuentran en el horario numero 1
+
+1) db.Contrato.find({Chorario:""{$gt:CH01}}).pretty()
+
+Kilimanjaro necesita saber qué clientes o usuarios acceden al servicio desde Surco
+
+2)db.Usuario.find({Distrito:{$gt: "Surco"}}.pretty()
+
+Se desea saber qué pedidos fueron realizados desde el 2020-03-10
+
+3) db.Delivery.find({DPedido:{$gt:new ISODate(2020-03-10)}}.pretty()
