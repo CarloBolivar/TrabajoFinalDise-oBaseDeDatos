@@ -1,0 +1,15 @@
+1) SELECT HDeinicio FROM DeliveryEstado
+WHERE DATEPART(HOUR, HDeinicio) BETWEEN 12 and 7
+ORDER BY HDeinicio  ASC;
+
+2) SELECT MPagoHoraExtra FROM Contrato
+WHERE (Chorario = CH01 AND MPagoHoraExtra BETWEEN 100 AND 200)
+ORDER BY MPagoHoraExtra ASC;
+
+3) SELECT NroLatitudFin FROM Ruta
+WHERE ( NroLatitudFin AND NroLongitudFin > NroLatitudInicio AND NroLongitudInicio)
+ORDER BY NroLatitudFin AND NroLongitudFin ASC;
+
+4) SELECT Cpassword FROM Cliente
+WHERE CHARACTER_LENGTH(CPassword)>=9
+ORDER BY CPassword ASC;
