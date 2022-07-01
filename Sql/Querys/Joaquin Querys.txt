@@ -2,7 +2,7 @@ El negocio desea realizar una recopilación de información para saber qué tipo
 son los que se venden más día a día, por lo que se guiará de la hora del pedido a la hora de determinar su tipo. 
 
 1) SELECT HDeinicio FROM DeliveryEstado
-WHERE DATEPART(HOUR, HDeinicio) BETWEEN 12 and 7
+WHERE DATEPART(HOUR, HDeinicio) BETWEEN 7 and 12
 ORDER BY HDeinicio  ASC;
 
 Killimanjaro desea saber qué trabajadores del horario número 1 recibirán un pago adicional para segmentarlos y así administrar mucho más 
