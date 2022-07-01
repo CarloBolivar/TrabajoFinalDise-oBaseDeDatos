@@ -16,13 +16,14 @@ ORDER BY MPagoHoraExtra ASC;
 Killimanjaro desea saber cuáles son los sitios donde deben entregar los pedidos detalle para así conocer quiénes están más 
 alejados y quiénes más cerca a fin de administrar correctamente los tiempos de delivery.
 
-3) SELECT NroLatitudFin FROM Ruta
-WHERE ( NroLatitudFin AND NroLongitudFin > NroLatitudInicio AND NroLongitudInicio)
-ORDER BY NroLatitudFin AND NroLongitudFin ASC;
+3) USE KILIMANJARODB
+SELECT NumLatitudFin ,NumLongitudfin FROM Ruta 
+WHERE NumLatitudfin  > NumLatitudInicio AND NumLongitudfin > NumLongitudInicio
+ORDER BY NumLatitudfin , NumLongitudfin
 
 Se desea conocer qué contraseñas de los clientes pueden ser vulnerables o descubiertas fácilmente, por lo que se 
 evaluará y seleccionará si la contraseña tiene más de 9 dígitos 
 
-4) SELECT Cpassword FROM Cliente
-WHERE CHARACTER_LENGTH(CPassword)>=9
-ORDER BY CPassword ASC;
+4) SELECT NPassword FROM Cliente
+WHERE LEN (NPassword)>=9
+ORDER BY NPassword ASC;
