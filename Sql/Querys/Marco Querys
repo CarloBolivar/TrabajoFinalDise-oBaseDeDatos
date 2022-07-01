@@ -6,25 +6,25 @@ Marco
   ON ED.CEstado = E.CEstado 
   GROUP BY CEstado
 
-2)SELECT NPlatillo, Npaso, MAX(Qduracion) 
+2)SELECT NPlatillo, NPaso, MAX(QDuracion) AS MaxD  
   FROM Platillo PL 
   JOIN Paso P 
-  ON PL.CPlatillo=P.CPlatillo 
-  GROUP BY CPlatillo 
-  ORDER BY 1
+  ON PL.CPlatillo=P.CPlatillo
+  GROUP BY NPlatillo,NPaso,QDuracion
+  ORDER BY MaxD DESC
 
-3)SELECT Usuario.Nnombre, Usuario.Napellido, Delivery.CRuta
+3)SELECT Nnombre, Napellido, CRuta
   FROM Usuario U
-  JOIN Pedido P ON U.CUsuario=P.CEmpleado 
-  JOIN Delivery D ON P.CPedido=D.CPedido 
-  GROUP BY CUsuario
+  JOIN Empleado E ON U.CUsuario=E.CEmpleado 
+  JOIN Delivery D ON E.CEmpleado=D.CEmpleado
+  JOIN Pedido P ON P.CPedido=D.CPedido
 
-4)SELECT Nnombre,Napellido 
-  FROM Usuario 
-  WHERE Nnombre NOT IN 
-  (SELECT DISTINCT Nnombre
+4)SELECT Nnombre,Napellido,MSueldo 
    FROM Usuario U
-   JOIN Contrato C
-   ON U.CUsuario=C.CEmpleado
-   WHERE Msueldo>1500
-   ORDER BY 1)
+   JOIN Contrato C ON U.CUsuario=C.CEmpleado
+   WHERE Nnombre NOT IN
+   (SELECT NNombre
+   FROM Usuario U
+   JOIN Empleado E ON E.CEmpleado=U.CUsuario
+   JOIN Contrato C ON U.CUsuario=C.CEmpleado
+   WHERE MSueldo>=1500)
