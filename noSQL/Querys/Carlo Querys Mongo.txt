@@ -1,6 +1,5 @@
 
-1- Se desea ver toda las colecciones de Kilimanjaro
-
+1- Se desea insertar un nuevo usuario en el documento de usuarios
 db.Usuario.insert({nombre_usuario:"Carlo",apellido_usuario:"Bolivar",telefono:989234553,correo:"corrreo@gmail.com,dirrecion:"Jirón Miguel Zamora 120",distrito:"San Borja"})
 
 
@@ -10,4 +9,8 @@ db.Usuario.findOne({_id: ObjectId("62bd2669532eaf036b0304eb")})
 
 
 3- Buscar un Pedido que se entrego a las 13:00 horas
+
 db.Pedido.find({hora: {$gt: 13}})
+
+
+
