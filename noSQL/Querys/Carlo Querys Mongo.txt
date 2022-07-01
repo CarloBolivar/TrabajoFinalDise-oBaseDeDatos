@@ -1,8 +1,7 @@
 
 1- Se desea ver toda las colecciones de Kilimanjaro
 
-use Kilimanjaro;
-show collections;
+db.Usuario.insert({nombre_usuario:"Carlo",apellido_usuario:"Bolivar",telefono:989234553,correo:"corrreo@gmail.com,dirrecion:"Jirón Miguel Zamora 120",distrito:"San Borja"})
 
 
 2- Se Busca un Usuario en especifico por su id
